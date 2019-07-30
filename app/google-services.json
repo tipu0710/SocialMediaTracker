@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "505784354126",
+    "firebase_url": "https://socialmediatracker-2d250.firebaseio.com",
+    "project_id": "socialmediatracker-2d250",
+    "storage_bucket": "socialmediatracker-2d250.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:505784354126:android:b7b131b9ad9d1022",
+        "android_client_info": {
+          "package_name": "com.example.socialmediatracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "505784354126-0r17b20aao74ov7n42lmjsdrc32i4n5s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.socialmediatracker",
+            "certificate_hash": "eed9f14883b80995a9c29a6c6d7145da453da406"
+          }
+        },
+        {
+          "client_id": "505784354126-3sqkklvaon6lpd2c1caup452ke92iqba.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAz3g3taqbRsCKftEuJeiIz7gcIDMmM9Fo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "505784354126-3sqkklvaon6lpd2c1caup452ke92iqba.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
