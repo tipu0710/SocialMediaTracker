@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.socialmediatracker.R;
@@ -45,6 +46,13 @@ public class AppAdapter extends RecyclerView.Adapter<AppAdapter.ViewHolder> {
             holder.lastTimeUsages.setText(DateUtils.formatSameDayTime(pkgStats.getLastTimeUsed(),
                     System.currentTimeMillis(), DateFormat.MEDIUM, DateFormat.MEDIUM));
 
+            holder.view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+
         }
     }
 
@@ -56,12 +64,14 @@ public class AppAdapter extends RecyclerView.Adapter<AppAdapter.ViewHolder> {
     class ViewHolder extends RecyclerView.ViewHolder {
         ImageView appIcon;
         TextView appName, appUsagesTime, lastTimeUsages;
+        CardView view;
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             appIcon = itemView.findViewById(R.id.app_icon);
             appName = itemView.findViewById(R.id.app_name);
             appUsagesTime = itemView.findViewById(R.id.app_usages_time);
             lastTimeUsages = itemView.findViewById(R.id.app_last_usages_time);
+            view = itemView.findViewById(R.id.view);
         }
     }
 }
