@@ -73,10 +73,10 @@ public class Main2Activity extends AppCompatActivity
         dailyBarChart = findViewById(R.id.daily_chart);
         weeklyBarChart = findViewById(R.id.weekly_chart);
         monthlyBarChart = findViewById(R.id.monthly_chart);
-        int permission = ContextCompat.checkSelfPermission(Main2Activity.this, Manifest.permission.PACKAGE_USAGE_STATS);
+        /*int permission = ContextCompat.checkSelfPermission(Main2Activity.this, Manifest.permission.PACKAGE_USAGE_STATS);
         if (permission != PackageManager.PERMISSION_GRANTED){
             startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
-        }
+        }*/
 
 
         dailyUsageStats = new ArrayList<>();

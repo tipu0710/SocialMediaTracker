@@ -4,6 +4,9 @@ public class DatabaseModel {
     private String packageName;
     private long time;
 
+    public DatabaseModel() {
+    }
+
     public DatabaseModel(String packageName, long time) {
         this.packageName = packageName;
         this.time = time;

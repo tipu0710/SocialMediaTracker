@@ -47,8 +47,7 @@ public class DBcreation {
         values.put(CreateDatabase.TIME, databaseModel.getTime());
 
         long id = sqLiteDatabase.update(CreateDatabase.TABLE_NAME, values,
-                CreateDatabase.PACKAGE_NAME+" = "+
-                        databaseModel.getPackageName(), null);
+                CreateDatabase.PACKAGE_NAME+" = ?", new String[]{String.valueOf(databaseModel.getPackageName())});
         this.close();
 
         return id > 0;
@@ -64,9 +63,9 @@ public class DBcreation {
         if (cursor.getCount()>0){
             for (int i =1; i<=cursor.getCount(); i++){
                 String packageName = cursor.getString(cursor.getColumnIndex(CreateDatabase.PACKAGE_NAME));
-                BigInteger time = BigInteger.valueOf(cursor.getInt(cursor.getColumnIndex(CreateDatabase.TIME)));
+                String time = cursor.getString(cursor.getColumnIndex(CreateDatabase.TIME));
                 cursor.moveToNext();
-                databaseModels.add(new DatabaseModel(packageName, time.longValue()));
+                databaseModels.add(new DatabaseModel(packageName, Long.parseLong(time)));
             }
 
         }
@@ -74,5 +73,31 @@ public class DBcreation {
         cursor.close();
         this.close();
         return databaseModels;
+    }
+
+
+    public DatabaseModel getDataByPackage(String packageName){
+        this.open();
+        String[] columns = {
+                CreateDatabase.PACKAGE_NAME,
+                CreateDatabase.TIME
+        };
+
+        String selection = CreateDatabase.PACKAGE_NAME + " = ?";
+        String[] selectionArgs = {packageName};
+
+        Cursor cursor = sqLiteDatabase.query(CreateDatabase.TABLE_NAME, columns, selection, selectionArgs, null, null, null);
+
+        cursor.moveToFirst();
+        DatabaseModel databaseModel = new DatabaseModel();
+        if (cursor.getCount()>0){
+            String packageN = cursor.getString(cursor.getColumnIndex(CreateDatabase.PACKAGE_NAME));
+            String time = cursor.getString(cursor.getColumnIndex(CreateDatabase.TIME));
+            databaseModel = new DatabaseModel(packageN, Long.parseLong(time));
+        }
+
+        cursor.close();
+        this.close();
+        return databaseModel;
     }
 }
