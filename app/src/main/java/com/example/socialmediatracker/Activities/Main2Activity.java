@@ -41,6 +41,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -65,6 +67,8 @@ public class Main2Activity extends AppCompatActivity
     private boolean databaseStatus = false;
     DBcreation dBcreation;
     ArrayList<DatabaseModel> databaseModels = new ArrayList<>();
+    private FirebaseAuth mAuth;
+    private String UID ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +76,15 @@ public class Main2Activity extends AppCompatActivity
         setContentView(R.layout.activity_main2);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
         progressBar = findViewById(R.id.progress_main_2);
         doubleBounce = new DoubleBounce();
         dailyBarChart = findViewById(R.id.daily_chart);
         weeklyBarChart = findViewById(R.id.weekly_chart);
         monthlyBarChart = findViewById(R.id.monthly_chart);
+
+
+        mAuth = FirebaseAuth.getInstance();
+        UID = mAuth.getUid();
 
         if (!hasUsageStatsPermission(Main2Activity.this))
             requestUsageStatsPermission();
@@ -95,19 +102,6 @@ public class Main2Activity extends AppCompatActivity
         databaseModels = dBcreation.getAllData();
         new LoadData().execute();
 
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                startActivity(new Intent(Main2Activity.this, MainActivity.class));
-                            }
-                        }).show();
-            }
-        });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -124,6 +118,7 @@ public class Main2Activity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            finish();
         }
     }
 
@@ -156,7 +151,7 @@ public class Main2Activity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            // Handle the camera action
+            startActivity(new Intent(Main2Activity.this, AppUsagesActivity.class));
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -165,13 +160,24 @@ public class Main2Activity extends AppCompatActivity
 
         } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_logout) {
+            logout();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    private void logout() {
+        mAuth.signOut();
+        startActivity(new Intent(Main2Activity.this, LoginActivity.class));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
     }
 
     public class LoadData extends AsyncTask<Void, Void, Void> {
@@ -192,6 +198,9 @@ public class Main2Activity extends AppCompatActivity
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            dailyBarChart.setVisibility(View.VISIBLE);
+            weeklyBarChart.setVisibility(View.VISIBLE);
+            monthlyBarChart.setVisibility(View.VISIBLE);
             createBar();
             AppInfo.SetAlarm(Main2Activity.this);
             progressBar.setVisibility(View.GONE);
@@ -385,5 +394,12 @@ public class Main2Activity extends AppCompatActivity
             startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
         }
     }
+
+    private void updateUI(FirebaseUser currentUser) {
+        if (currentUser == null){
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+    }
+
 
 }

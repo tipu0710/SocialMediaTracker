@@ -32,11 +32,12 @@
                 android:orientation="vertical">
                 <TextView
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Daily Status"/>
                 <com.github.mikephil.charting.charts.BarChart
+                    android:visibility="invisible"
                     android:layout_marginTop="50dp"
                     android:layout_width="match_parent"
                     android:layout_height="450dp"
@@ -51,11 +52,12 @@
                 android:orientation="vertical">
                 <TextView
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Weekly Status"/>
                 <com.github.mikephil.charting.charts.BarChart
+                    android:visibility="invisible"
                     android:layout_marginTop="50dp"
                     android:layout_width="match_parent"
                     android:layout_height="450dp"
@@ -70,11 +72,12 @@
                 android:orientation="vertical">
                 <TextView
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Monthly Status"/>
                 <com.github.mikephil.charting.charts.BarChart
+                    android:visibility="invisible"
                     android:layout_marginTop="50dp"
                     android:layout_width="match_parent"
                     android:layout_height="450dp"

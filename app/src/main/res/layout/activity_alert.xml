@@ -21,4 +21,13 @@
         android:layout_marginTop="20dp"
         android:text="AppName"/>
 
+    <Button
+        android:id="@+id/add_more_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="add more 10 min"
+        android:layout_below="@id/app_name_service_tv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"/>
+
 </RelativeLayout>

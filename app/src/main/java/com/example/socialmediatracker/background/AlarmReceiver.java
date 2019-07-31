@@ -35,6 +35,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 if (saveTime<= usedTime){
                     x.putExtra("appName", AppInfo.GetAppName(packageName,context));
                     x.putExtra("packageName", packageName);
+                    x.putExtra("usedTime", usedTime);
                     context.startActivity(x);
                 }
             }

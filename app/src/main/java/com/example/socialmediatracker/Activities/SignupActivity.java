@@ -86,7 +86,7 @@ public class SignupActivity extends AppCompatActivity implements ProgressGenerat
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()){
-                                            startActivity(new Intent(SignupActivity.this, MainActivity.class));
+                                            startActivity(new Intent(SignupActivity.this, Main2Activity.class));
                                         }else {
                                             // If sign in fails, display a message to the user.
                                             Toast.makeText(SignupActivity.this, task.getException().getMessage(),

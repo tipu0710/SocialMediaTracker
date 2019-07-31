@@ -19,6 +19,7 @@ import com.github.ybq.android.spinkit.style.DoubleBounce;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 public class AppUsagesActivity extends AppCompatActivity {
 
