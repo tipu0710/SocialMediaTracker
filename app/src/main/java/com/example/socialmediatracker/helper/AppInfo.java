@@ -4,14 +4,8 @@ import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.util.ArrayMap;
-import android.util.Log;
 import android.view.LayoutInflater;
 
 import androidx.annotation.RequiresApi;
@@ -20,15 +14,17 @@ import androidx.core.content.ContextCompat;
 import com.example.socialmediatracker.R;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class AppInfo {
     private Context context;
     private static final long A_DAY = 86400 * 1000;
+
+
     public AppInfo(Context context) {
         this.context = context;
     }
+
 
     public static List<String> GetAllInstalledApkInfo(Context context){
 
@@ -55,10 +51,14 @@ public class AppInfo {
         return ApkPackageName;
     }
 
+
+
     public static boolean isSystemPackage(ResolveInfo resolveInfo){
 
         return ((resolveInfo.activityInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
     }
+
+
 
     public static Drawable getAppIconByPackageName(String ApkTempPackageName, Context context){
 
@@ -76,6 +76,8 @@ public class AppInfo {
         }
         return drawable;
     }
+
+
 
     public static String GetAppName(String ApkPackageName, Context context){
 
@@ -101,6 +103,8 @@ public class AppInfo {
         return Name;
     }
 
+
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     public static List<UsageStats> getAppDetails(Context context){
         UsageStatsManager usm = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
@@ -114,6 +118,7 @@ public class AppInfo {
         assert usm != null;
         return usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, start, time);
     }
+
 
     public static boolean isSystemApp(ApplicationInfo applicationInfo){
         boolean b=false;
@@ -250,5 +255,28 @@ public class AppInfo {
         long start = cal.getTimeInMillis();
         long end = start + A_DAY > timeNow ? timeNow : start + A_DAY;
         return new long[]{start, end};
+    }
+
+    public static void SetAlarms(Context context, long minimumTime) {
+        Calendar calender = Calendar.getInstance();
+        int month = calender.get(Calendar.MONTH);
+        int day = calender.get(Calendar.DAY_OF_MONTH);
+        int year = calender.get(Calendar.YEAR);
+        int minute = (int) minimumTime/(1000*60);
+        int hours = (minute/60);
+        minute = (minute%60);
+        calender.set(Calendar.MONTH, month);
+        calender.set(Calendar.DAY_OF_MONTH, day);
+        calender.set(Calendar.YEAR, year);
+        calender.set(Calendar.HOUR, calender.get(Calendar.HOUR)+hours);
+        calender.set(Calendar.MINUTE, calender.get(Calendar.MINUTE)+minute);
+        calender.set(Calendar.SECOND, 0);
+
+        AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 125, intent, 0);
+
+        alarmMgr.set(AlarmManager.RTC_WAKEUP, calender.getTimeInMillis(), pendingIntent);
+
     }
 }

@@ -27,6 +27,7 @@ import com.example.socialmediatracker.helper.AppInfo;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator;
 
@@ -103,9 +104,11 @@ public class AppAdapter extends RecyclerView.Adapter<AppAdapter.ViewHolder> {
         appNameD.setText(AppInfo.GetAppName(packageName,context));
         DatabaseModel databaseModel = dBcreation.getDataByPackage(packageName);
         long time = databaseModel.getTime();
-        Toast.makeText(context, ""+time, Toast.LENGTH_SHORT).show();
+        int minute = (int) time/(1000*60);
+        int hours = (minute/60);
+        minute = (minute%60);
         hour.setHint("hh:MM");
-        hour.setText(String.valueOf((time/(3600*1000))));
+        hour.setText(hours+":"+minute);
         imageView.setImageDrawable(AppInfo.getAppIconByPackageName(packageName,context));
 
 

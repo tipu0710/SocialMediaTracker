@@ -7,6 +7,7 @@
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
         android:allowBackup="true"
@@ -15,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.AppUsagesActivity"></activity>
+        <activity android:name=".Activities.Alert"></activity>
+        <activity android:name=".Activities.AppUsagesActivity" />
         <activity
             android:name=".Activities.Main2Activity"
             android:label="@string/title_activity_main2"

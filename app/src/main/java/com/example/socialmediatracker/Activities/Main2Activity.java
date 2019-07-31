@@ -1,11 +1,15 @@
 package com.example.socialmediatracker.Activities;
 
 import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.AppOpsManager;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.example.socialmediatracker.DBoperation.DBcreation;
@@ -60,6 +64,7 @@ public class Main2Activity extends AppCompatActivity
     BarChart dailyBarChart, weeklyBarChart, monthlyBarChart;
     private boolean databaseStatus = false;
     DBcreation dBcreation;
+    ArrayList<DatabaseModel> databaseModels = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,10 +78,9 @@ public class Main2Activity extends AppCompatActivity
         dailyBarChart = findViewById(R.id.daily_chart);
         weeklyBarChart = findViewById(R.id.weekly_chart);
         monthlyBarChart = findViewById(R.id.monthly_chart);
-        /*int permission = ContextCompat.checkSelfPermission(Main2Activity.this, Manifest.permission.PACKAGE_USAGE_STATS);
-        if (permission != PackageManager.PERMISSION_GRANTED){
-            startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
-        }*/
+
+        if (!hasUsageStatsPermission(Main2Activity.this))
+            requestUsageStatsPermission();
 
 
         dailyUsageStats = new ArrayList<>();
@@ -88,6 +92,7 @@ public class Main2Activity extends AppCompatActivity
         dBcreation = new DBcreation(Main2Activity.this);
         ArrayList<DatabaseModel> databaseModels = dBcreation.getAllData();
         databaseStatus = databaseModels.size() <= 0;
+        databaseModels = dBcreation.getAllData();
         new LoadData().execute();
 
 
@@ -235,6 +240,10 @@ public class Main2Activity extends AppCompatActivity
 
             if (databaseStatus){
                 dBcreation.AddAppInfo(new DatabaseModel(packageName, 2*3600*1000));
+            }else {
+                if (!databaseModels.get(i).getPackageName().contains(packageName)){
+                    dBcreation.AddAppInfo(new DatabaseModel(packageName, 2*3600*1000));
+                }
             }
         }
 
@@ -356,6 +365,22 @@ public class Main2Activity extends AppCompatActivity
         monthlyBarData.setBarWidth(0.5f);
         monthlyBarChart.setData(monthlyBarData);
 
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    boolean hasUsageStatsPermission(Context context) {
+        AppOpsManager appOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
+        int mode = appOps.checkOpNoThrow("android:get_usage_stats",
+                android.os.Process.myUid(), context.getPackageName());
+        boolean granted = mode == AppOpsManager.MODE_ALLOWED;
+        return granted;
+    }
+
+    void requestUsageStatsPermission() {
+        if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+                && !hasUsageStatsPermission(this)) {
+            startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
+        }
     }
 
 }
