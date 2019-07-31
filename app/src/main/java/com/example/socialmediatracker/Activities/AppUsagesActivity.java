@@ -6,13 +6,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
-import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.example.socialmediatracker.Adapter.AppAdapter;
 import com.example.socialmediatracker.R;
@@ -22,7 +19,6 @@ import com.github.ybq.android.spinkit.style.DoubleBounce;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 
 public class AppUsagesActivity extends AppCompatActivity {
 

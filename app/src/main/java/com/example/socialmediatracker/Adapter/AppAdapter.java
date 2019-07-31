@@ -1,11 +1,8 @@
 package com.example.socialmediatracker.Adapter;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.usage.UsageStats;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,9 +24,6 @@ import com.example.socialmediatracker.helper.AppInfo;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-
-import antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator;
 
 
 public class AppAdapter extends RecyclerView.Adapter<AppAdapter.ViewHolder> {
