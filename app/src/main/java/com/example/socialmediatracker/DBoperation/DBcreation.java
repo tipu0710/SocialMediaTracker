@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class DBcreation {
@@ -28,6 +27,7 @@ public class DBcreation {
 
     public boolean AddAppInfo(DatabaseModel databaseModel){
         this.open();
+        sqLiteDatabase = createDatabase.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put(CreateDatabase.PACKAGE_NAME, databaseModel.getPackageName());

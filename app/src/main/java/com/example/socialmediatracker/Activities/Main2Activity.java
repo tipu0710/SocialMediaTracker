@@ -90,7 +90,7 @@ public class Main2Activity extends AppCompatActivity
         monthlyUsageStats = new ArrayList<>();
 
         dBcreation = new DBcreation(Main2Activity.this);
-        ArrayList<DatabaseModel> databaseModels = dBcreation.getAllData();
+        databaseModels = dBcreation.getAllData();
         databaseStatus = databaseModels.size() <= 0;
         databaseModels = dBcreation.getAllData();
         new LoadData().execute();
@@ -193,6 +193,7 @@ public class Main2Activity extends AppCompatActivity
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             createBar();
+            AppInfo.SetAlarm(Main2Activity.this);
             progressBar.setVisibility(View.GONE);
         }
 
@@ -228,6 +229,10 @@ public class Main2Activity extends AppCompatActivity
 
 
 
+        ArrayList<String> pkgList = new ArrayList<>();
+        for (int i=0; i<databaseModels.size();i++){
+            pkgList.add(databaseModels.get(i).getPackageName());
+        }
         ArrayList<BarEntry> barEntries = new ArrayList<>();
         List<String> dailyAppName = new ArrayList<>();
         for (int i = 0; i< dailyUsageStats.size(); i++){
@@ -240,13 +245,11 @@ public class Main2Activity extends AppCompatActivity
 
             if (databaseStatus){
                 dBcreation.AddAppInfo(new DatabaseModel(packageName, 2*3600*1000));
-            }else {
-                if (!databaseModels.get(i).getPackageName().contains(packageName)){
-                    dBcreation.AddAppInfo(new DatabaseModel(packageName, 2*3600*1000));
-                }
+            }
+            if (!pkgList.contains(packageName)){
+                dBcreation.AddAppInfo(new DatabaseModel(packageName, 2*3600*1000));
             }
         }
-
         IAxisValueFormatter xDAxisValueFormatter = new DayAxisValueFormatter(dailyBarChart,dailyAppName);
         XAxis xAxis = dailyBarChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
