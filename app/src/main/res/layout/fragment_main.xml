@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.MainFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.github.ybq.android.spinkit.SpinKitView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/progress_bar"
+            style="@style/SpinKitView.Circle"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            app:SpinKit_Color="#4CAF50"
+            android:visibility="gone"/>
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:id="@+id/daily"
+            android:textSize="15sp"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Most usages app of today"/>
+        <LinearLayout
+            android:layout_marginTop="30dp"
+            android:layout_below="@id/daily"
+            android:id="@+id/linear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:background="@drawable/ic_insert_chart_black_24dp"
+                    android:id="@+id/app1"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:text="appName"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/app_name1"/>
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/app2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_insert_chart_black_24dp" />
+
+                <TextView
+                    android:id="@+id/app_name2"
+                    android:layout_width="wrap_content"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:text="appName" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:background="@drawable/ic_insert_chart_black_24dp"
+                    android:id="@+id/app3"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:text="appName"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/app_name3"/>
+            </LinearLayout>
+
+        </LinearLayout>
+        <com.github.mikephil.charting.charts.PieChart
+            android:visibility="invisible"
+            android:padding="10dp"
+            android:layout_below="@id/linear"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="20dp"
+            android:id="@+id/pie">
+
+        </com.github.mikephil.charting.charts.PieChart>
+    </RelativeLayout>
+
+</FrameLayout>

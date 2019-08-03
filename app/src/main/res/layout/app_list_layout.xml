@@ -2,49 +2,92 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp"
     android:layout_height="wrap_content">
 
 
     <androidx.cardview.widget.CardView
         android:id="@+id/view"
         android:elevation="3dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:padding="5dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/app_icon"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_margin="5dp"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/ic_launcher" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_margin="5dp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
                 android:orientation="vertical">
-                <TextView
-                    android:id="@+id/app_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="app name" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="App Name: "
+                        android:textColor="#292828"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/app_name"
+                        android:layout_width="0dp"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_weight="2.5"
+                        android:layout_height="wrap_content"
+                        android:text="app name" />
 
-                <TextView
-                    android:id="@+id/app_usages_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Time" />
+                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/app_last_usages_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Last Time" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="Last time used: "
+                        android:textColor="#292828"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/app_last_usages_time"
+                        android:layout_width="0dp"
+                        android:layout_weight="2.5"
+                        android:textColor="#2196F3"
+                        android:layout_height="wrap_content"
+                        android:text="time" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="Usages Time: "
+                        android:textColor="#292828"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/app_usages_time"
+                        android:layout_width="0dp"
+                        android:layout_weight="2.5"
+                        android:layout_height="wrap_content"
+                        android:text="time" />
+
+                </LinearLayout>
+
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

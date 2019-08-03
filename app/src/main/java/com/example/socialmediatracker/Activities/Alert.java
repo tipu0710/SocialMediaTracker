@@ -21,12 +21,12 @@ public class Alert extends AppCompatActivity {
     ImageView appIcon;
     Button addMoreTimeBtn;
     long usedTime;
-    final long EXTRA_TIME = 2*60*1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alert);
+        getSupportActionBar().hide();
         Intent intent = getIntent();
         String appName = intent.getStringExtra("appName");
         final String packageName = intent.getStringExtra("packageName");
@@ -40,12 +40,10 @@ public class Alert extends AppCompatActivity {
         addMoreTimeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DBcreation dBcreation = new DBcreation(Alert.this);
-                boolean b = dBcreation.UpdateAppBasicInfo(new DatabaseModel(packageName,usedTime+EXTRA_TIME));
-                if (b){
-                    Toast.makeText(Alert.this, "Added more 10 minute!", Toast.LENGTH_SHORT).show();
-                    AppInfo.SetAlarm(Alert.this);
-                }
+                Toast.makeText(Alert.this, "Added more 10 minute!", Toast.LENGTH_SHORT).show();
+                AppInfo.SetAlarm(Alert.this, 10);
+                finish();
+                System.exit(0);
             }
         });
     }

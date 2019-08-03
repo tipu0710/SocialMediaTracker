@@ -34,6 +34,7 @@ public class AppUsagesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_usage);
+        getSupportActionBar().hide();
         appList = findViewById(R.id.app_list);
         progressBar = findViewById(R.id.progress);
         doubleBounce = new DoubleBounce();

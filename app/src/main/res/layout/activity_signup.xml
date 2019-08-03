@@ -1,150 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1D1D1D"
     tools:context=".Activities.SignupActivity">
 
-    <com.libizo.CustomEditText
+    <ImageView
+        android:id="@+id/app_icon_"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/ic_launcher"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"/>
+
+    <EditText
         android:id="@+id/sign_up_name"
-        android:layout_width="match_parent"
+        android:layout_width="270dp"
         android:layout_height="50dp"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="8dp"
         android:hint="Name"
-        android:textColor="#ffffff"
+        android:textColor="#181818"
         android:paddingLeft="20dp"
         android:textColorHint="#505050"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.23000002"
-        app:libIZO_setBorderColor="#FFFFFF"
-        app:libIZO_setBorderView="true"
-        app:libIZO_setCornerRadius="30dp"
-        app:libIZO_setCursorColor="#FFFFFFFF" />
+        android:layout_below="@id/app_icon_"/>
 
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="30dp"
+        android:layout_toStartOf="@id/sign_up_name"
         android:layout_height="30dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="4dp"
+        android:layout_below="@id/app_icon_"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="10dp"
         android:src="@drawable/ic_person"
-        app:layout_constraintBottom_toBottomOf="@+id/sign_up_name"
-        app:layout_constraintEnd_toStartOf="@+id/sign_up_name"
-        app:layout_constraintHorizontal_bias="0.82"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/sign_up_name"
-        android:contentDescription="Email" />
+        android:contentDescription="Person" />
 
 
-    <com.libizo.CustomEditText
+    <EditText
         android:id="@+id/sign_up_email"
-        android:layout_width="match_parent"
+        android:layout_width="270dp"
         android:layout_height="50dp"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="8dp"
-        android:textColor="#ffffff"
+        android:layout_below="@id/sign_up_name"
+        android:textColor="#181818"
         android:inputType="textEmailAddress"
         android:hint="someone@email.com"
-        android:paddingLeft="20dp"
-        android:textColorHint="#505050"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_up_name"
-        app:layout_constraintVertical_bias="0.0"
-        app:libIZO_setBorderColor="#FFFFFF"
-        app:libIZO_setBorderView="true"
-        app:libIZO_setCornerRadius="30dp"
-        app:libIZO_setCursorColor="#FFFFFFFF" />
+        android:paddingStart="20dp"
+        android:textColorHint="#505050"/>
 
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="4dp"
+        android:layout_below="@id/sign_up_name"
+        android:layout_toStartOf="@id/sign_up_email"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="10dp"
         android:src="@drawable/ic_mail"
-        app:layout_constraintBottom_toBottomOf="@+id/sign_up_email"
-        app:layout_constraintEnd_toStartOf="@+id/sign_up_email"
-        app:layout_constraintHorizontal_bias="0.82"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/sign_up_email"
         android:contentDescription="Email" />
 
 
-    <com.libizo.CustomEditText
+    <EditText
         android:id="@+id/sign_up_password"
-        android:layout_width="match_parent"
+        android:layout_width="270dp"
         android:layout_height="50dp"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:layout_below="@id/sign_up_email"
         android:hint="Password"
-        android:paddingLeft="20dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="0dp"
         android:inputType="textPassword"
-        android:textColor="#ffffff"
-        android:textColorHint="#505050"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_up_email"
-        app:layout_constraintVertical_bias="0.0"
-        app:libIZO_setBorderColor="#FFFFFF"
-        app:libIZO_setBorderView="true"
-        app:libIZO_setCornerRadius="30dp"
-        app:libIZO_setCursorColor="#FFFFFFFF" />
+        android:textColor="#181818"
+        android:textColorHint="#505050" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="4dp"
+        android:layout_below="@id/sign_up_email"
+        android:layout_toStartOf="@id/sign_up_password"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="10dp"
         android:src="@drawable/ic_lock"
-        app:layout_constraintBottom_toBottomOf="@+id/sign_up_password"
-        app:layout_constraintEnd_toStartOf="@+id/sign_up_password"
-        app:layout_constraintHorizontal_bias="0.82"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/sign_up_password"
         android:contentDescription="Password" />
 
-    <com.dd.processbutton.iml.ActionProcessButton
+    <Button
         android:id="@+id/sign_up_btn"
         android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_below="@id/sign_up_password"
+        android:layout_height="60dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:backgroundTint="#3E3C41"
         android:text="SIGNUP"
+        android:layout_centerHorizontal="true"
         android:textColor="@android:color/white"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/sign_up_password"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/sign_up_password"
-        app:layout_constraintVertical_bias="0.057"
-        app:pb_colorComplete="@color/green_complete"
-        app:pb_colorError="@color/red_error"
-        app:pb_colorNormal="@color/blue_normal"
-        app:pb_colorPressed="@color/blue_pressed"
-        app:pb_colorProgress="@color/purple_progress"
-        app:pb_textComplete="Success"
-        app:pb_textError="Error"
-        app:pb_textProgress="Loading" />
+        android:textSize="18sp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:id="@+id/trans_sign"
+        android:background="@android:drawable/screen_background_dark_transparent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.github.ybq.android.spinkit.SpinKitView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/progress_bar_sign"
+        style="@style/SpinKitView.Circle"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        app:SpinKit_Color="#673AB7"
+        android:visibility="gone"/>
+
+</RelativeLayout>
