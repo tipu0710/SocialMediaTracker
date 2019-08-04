@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SocialMediaTracker</string>
+    <string name="app_name">Social Media Tracker</string>
     <string name="user">users</string>
     <string name="name">name</string>
     <string name="open_app_usage_setting">Open Apps with usage access settings</string>
@@ -25,4 +25,5 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
+    <string name="about">Social media relates to websites and apps intended to allow individuals to share content in a fast, efficient and real-time manner which makes it easier to create virtual networks and communities. There is no doubt that social media has become an important means of communication for students, particularly at the higher education level. Apart from the positive impacts of social media, multiple dark sides, especially for students, have become a matter of great concern at presenSocial media kills a lots of time of students which responsible for poor academic result. We found that excessive use of social media adversely related to student\'s academic result.This application is specially designed for students to keep them-self away from addictive use of social media.</string>
 </resources>
