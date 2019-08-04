@@ -2,11 +2,9 @@ package com.example.socialmediatracker.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.TargetApi;
 import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
@@ -32,16 +30,14 @@ public class EmptyActivity extends AppCompatActivity {
             }
         });
 
-        checkPermission();
-
         if (!permission){
             Thread thread = new Thread() {
                 @Override
                 public void run() {
                     try {
-                        while(true) {
+                        while (true) {
                             sleep(1000);
-                            if (hasUsageStatsPermission(EmptyActivity.this) && !permission){
+                            if (hasUsageStatsPermission(EmptyActivity.this) && !permission) {
                                 startActivity(new Intent(EmptyActivity.this, Main2Activity.class));
                                 permission = true;
                             }
@@ -51,6 +47,7 @@ public class EmptyActivity extends AppCompatActivity {
                     }
                 }
             };
+
             if (permission){
                 thread.interrupt();
             }
@@ -68,6 +65,7 @@ public class EmptyActivity extends AppCompatActivity {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
+        checkPermission();
     }
 
     private void updateUI(FirebaseUser currentUser) {
