@@ -16,12 +16,20 @@ import com.rvalerio.fgchecker.AppChecker;
 import java.util.ArrayList;
 
 public class AlarmReceiver extends BroadcastReceiver {
+
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.v("alarm1","start receiver");
         Intent x = new Intent(context, Alert.class);
         x.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         DBcreation dBcreation = new DBcreation(context);
+
+        ArrayList<DatabaseModel> databaseModels = dBcreation.getAllData();
+        ArrayList<String> pkgList = new ArrayList<>();
+        for (int i = 0; i< databaseModels.size(); i++){
+            pkgList.add(databaseModels.get(i).getPackageName());
+        }
+
         AppChecker appChecker = new AppChecker();
         String foregroundPackageName = appChecker.getForegroundApp(context);
 
@@ -30,6 +38,9 @@ public class AlarmReceiver extends BroadcastReceiver {
             long usedTime = appInfo.get(i).getTotalTimeInForeground();
             String packageName = appInfo.get(i).getPackageName();
             DatabaseModel databaseModel = dBcreation.getDataByPackage(packageName);
+            if (!pkgList.contains(packageName)){
+                dBcreation.AddAppInfo(new DatabaseModel(packageName, 2*3600*1000));
+            }
             long saveTime = databaseModel.getTime();
             if (foregroundPackageName.equals(packageName)){
                 if (saveTime<= usedTime){
@@ -38,6 +49,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                     x.putExtra("usedTime", usedTime);
                     context.startActivity(x);
                 }
+                break;
             }
         }
     }

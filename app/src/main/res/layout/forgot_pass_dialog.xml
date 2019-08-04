@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:id="@+id/image_view_pass"
+        android:background="@drawable/password"/>
+
+    <EditText
+        android:id="@+id/email_pass"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:textColor="#303030"
+        android:layout_below="@id/image_view_pass"
+        android:layout_centerHorizontal="true"
+        android:inputType="textEmailAddress"
+        android:hint="Enter your email"
+        android:layout_marginTop="60dp"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:layout_marginBottom="50dp"/>
+
+    <Button
+        android:id="@+id/send_mail_pass"
+        android:layout_below="@id/email_pass"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reset password"
+        android:textColor="@android:color/white"
+        android:backgroundTint="#3E3C41"
+        android:padding="20dp"
+        android:layout_marginBottom="60dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:id="@+id/trans_pass"
+        android:background="@android:drawable/screen_background_dark_transparent" />
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/progress_bar_pass"
+        style="@style/SpinKitView.Circle"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        app:SpinKit_Color="#00E7C4"
+        android:visibility="gone"/>
+
+</RelativeLayout>

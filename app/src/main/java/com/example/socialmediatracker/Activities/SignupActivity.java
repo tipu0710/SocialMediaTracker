@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,7 +33,6 @@ public class SignupActivity extends AppCompatActivity{
     EditText emailEt, passwordEt, nameEt;
     Button signUpBtn;
     private FirebaseAuth mAuth;
-    private DatabaseReference databaseReference;
     private ProgressBar progressBar;
     private Sprite doubleBounce;
     private TextView trans;
@@ -88,26 +88,23 @@ public class SignupActivity extends AppCompatActivity{
                             progressBar.setVisibility(View.GONE);
                             signUpBtn.setVisibility(View.VISIBLE);
                             if (task.isSuccessful()) {
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                String UID = user.getUid();
-                                databaseReference = FirebaseDatabase.getInstance().getReference().child(getString(R.string.user)).child(UID);
-                                String deviceToken = FirebaseInstanceId.getInstance().getToken();
-                                HashMap<String, String> userMap = new HashMap<>();
-                                userMap.put(getString(R.string.name), name);
-                                userMap.put("device_token", deviceToken);
-
-                                databaseReference.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                final FirebaseUser user = mAuth.getCurrentUser();
+                                user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()){
-                                            startActivity(new Intent(SignupActivity.this, Main2Activity.class));
+                                            Toast.makeText(SignupActivity.this, "SignUp Successfully. Please verify your email!", Toast.LENGTH_LONG).show();
+                                            Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                                            intent.putExtra("name",name);
+                                            intent.putExtra("bool", true);
+                                            startActivity(intent);
+                                            finish();
                                         }else {
-                                            // If sign in fails, display a message to the user.
-                                            Toast.makeText(SignupActivity.this, task.getException().getMessage(),
-                                                    Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(SignupActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 });
+
 
                             } else {
                                 // If sign in fails, display a message to the user.

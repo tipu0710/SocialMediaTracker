@@ -3,9 +3,12 @@ package com.example.socialmediatracker.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,16 +26,22 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.libizo.CustomEditText;
+
+import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity {
 
     EditText emailEt, passwordEt;
     Button loginBtn;
-    TextView signUpTv,trans;
+    TextView signUpTv,trans, forgotPassTv;
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
     private Sprite doubleBounce;
+    private DatabaseReference databaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn = findViewById(R.id.login_btn);
         signUpTv = findViewById(R.id.create_account_txt);
         progressBar = findViewById(R.id.progress_bar_login);
+        forgotPassTv = findViewById(R.id.forgot_pass_txt);
         trans = findViewById(R.id.trans_login);
         doubleBounce = new DoubleBounce();
 
@@ -80,13 +90,45 @@ public class LoginActivity extends AppCompatActivity {
                             trans.setVisibility(View.GONE);
                             loginBtn.setVisibility(View.VISIBLE);
                             if (task.isSuccessful()){
-                                startActivity(new Intent(LoginActivity.this, Main2Activity.class));
+                                if (mAuth.getCurrentUser().isEmailVerified()){
+                                   if (getIntent().getBooleanExtra("bool",false)){
+                                       String UID = mAuth.getCurrentUser().getUid();
+                                       databaseReference = FirebaseDatabase.getInstance().getReference().child(getString(R.string.user)).child(UID);
+                                       String deviceToken = FirebaseInstanceId.getInstance().getToken();
+                                       HashMap<String, String> userMap = new HashMap<>();
+                                       userMap.put(getString(R.string.name), getIntent().getStringExtra("name"));
+                                       userMap.put("device_token", deviceToken);
+
+                                       databaseReference.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                           @Override
+                                           public void onComplete(@NonNull Task<Void> task) {
+                                               if (task.isSuccessful()){
+                                                   Log.v("SignUp", "SignUp and data saved successfully!");
+                                               }else {
+                                                   // If sign in fails, display a message to the user.
+                                                   Log.v("SignUp", task.getException().getMessage());
+                                               }
+                                           }
+                                       });
+                                   }
+
+                                    startActivity(new Intent(LoginActivity.this, EmptyActivity.class));
+                                }else {
+                                    Toast.makeText(LoginActivity.this, "Please verify your email first!", Toast.LENGTH_LONG).show();
+                                }
                             }else {
                                 Toast.makeText(LoginActivity.this, ""+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
                 }
+            }
+        });
+
+        forgotPassTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog();
             }
         });
 
@@ -99,5 +141,52 @@ public class LoginActivity extends AppCompatActivity {
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    private void showDialog() {
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(LoginActivity.this);
+
+        final Sprite doubleBounceDia;
+        final View dialogView = LayoutInflater.from(LoginActivity.this).inflate(R.layout.forgot_pass_dialog, null);
+
+        final EditText emailEt = dialogView.findViewById(R.id.email_pass);
+        final Button resetBtn = dialogView.findViewById(R.id.send_mail_pass);
+        final ProgressBar progressBarDia = dialogView.findViewById(R.id.progress_bar_pass);
+        final TextView transDia = dialogView.findViewById(R.id.trans_pass);
+
+        doubleBounceDia = new DoubleBounce();
+        mBuilder.setView(dialogView);
+        final AlertDialog dialog = mBuilder.create();
+        resetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email = emailEt.getText().toString();
+                if (email.isEmpty()){
+                    emailEt.setError("Please enter your email");
+                }else {
+                    resetBtn.setVisibility(View.INVISIBLE);
+                    transDia.setVisibility(View.VISIBLE);
+                    progressBarDia.setVisibility(View.VISIBLE);
+                    progressBarDia.setIndeterminateDrawable(doubleBounceDia);
+                    mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            progressBarDia.setVisibility(View.GONE);
+                            transDia.setVisibility(View.GONE);
+                            resetBtn.setVisibility(View.VISIBLE);
+                            if (task.isSuccessful()){
+                                dialog.dismiss();
+                                Toast.makeText(LoginActivity.this, "Reset link send to your email!", Toast.LENGTH_LONG).show();
+                            }else {
+                                Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                }
+
+            }
+        });
+
+        dialog.show();
     }
 }

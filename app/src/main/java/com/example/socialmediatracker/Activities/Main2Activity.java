@@ -1,20 +1,15 @@
 package com.example.socialmediatracker.Activities;
 
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
-import android.app.AppOpsManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import com.example.socialmediatracker.R;
 import com.example.socialmediatracker.ViewPager.MainViewPagerAdapter;
 
-import android.provider.Settings;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +22,6 @@ import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -65,9 +59,6 @@ public class Main2Activity extends AppCompatActivity
         viewPager.setAdapter(mainViewPagerAdapter);
 
         mAuth = FirebaseAuth.getInstance();
-
-        if (hasUsageStatsPermission(Main2Activity.this))
-            requestUsageStatsPermission();
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -121,31 +112,6 @@ public class Main2Activity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
-    }
-
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    boolean hasUsageStatsPermission(Context context) {
-        AppOpsManager appOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
-        int mode = 0;
-        if (appOps != null) {
-            mode = appOps.checkOpNoThrow("android:get_usage_stats",
-                    android.os.Process.myUid(), context.getPackageName());
-        }
-        return mode != AppOpsManager.MODE_ALLOWED;
-    }
-
-    void requestUsageStatsPermission() {
-        if(hasUsageStatsPermission(this)) {
-            startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
-        }
-    }
-
-    private void updateUI(FirebaseUser currentUser) {
-        if (currentUser == null){
-            startActivity(new Intent(this, LoginActivity.class));
-        }
     }
 
 
