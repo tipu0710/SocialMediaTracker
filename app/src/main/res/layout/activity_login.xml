@@ -4,80 +4,76 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/back"
     tools:context=".Activities.LoginActivity">
 
     <ImageView
         android:id="@+id/app_icon_log"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/enter"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:background="@drawable/icon"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"/>
 
     <EditText
         android:id="@+id/login_email"
-        android:layout_width="270dp"
+        android:layout_width="278dp"
         android:layout_height="50dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="8dp"
         android:textAlignment="center"
         android:gravity="center"
+        android:background="@drawable/edit_text_option"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="8dp"
         android:hint="someone@email.com"
-        android:textColor="#1D1D1D"
+        android:drawableStart="@drawable/ic_mail"
         android:inputType="textEmailAddress"
-        android:textColorHint="#505050"
-        android:layout_below="@id/app_icon_log"/>
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="30dp"
-        android:layout_toStartOf="@id/login_email"
-        android:layout_height="30dp"
-        android:layout_below="@id/app_icon_log"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="10dp"
-        android:src="@drawable/ic_mail"
-        android:contentDescription="Email" />
+        android:textColor="#FFFFFF"
+        android:textColorHint="#EEEEEE"
+        android:layout_below="@id/app_icon_log" />
 
 
     <EditText
         android:id="@+id/login_password"
-        android:layout_width="270dp"
+        android:layout_width="278dp"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
         android:layout_marginBottom="8dp"
         android:textAlignment="center"
-        android:hint="Password"
         android:gravity="center"
+        android:background="@drawable/edit_text_option"
+        android:layout_centerHorizontal="true"
+        android:hint="Password"
+        android:drawableStart="@drawable/password"
         android:inputType="textPassword"
-        android:textColor="#1D1D1D"
-        android:textColorHint="#505050"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#EEEEEE"
         android:layout_below="@id/login_email"/>
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="30dp"
-        android:layout_toStartOf="@id/login_password"
-        android:layout_height="30dp"
-        android:layout_below="@id/login_email"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="10dp"
-        android:src="@drawable/ic_lock" />
-
-    <Button
+    <ImageButton
         android:id="@+id/login_btn"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
+        android:layout_width="285dp"
+        android:layout_height="75dp"
         android:layout_marginTop="32dp"
+        android:foreground="?android:attr/selectableItemBackground"
         android:layout_marginBottom="8dp"
-        android:backgroundTint="#3E3C41"
-        android:text="LOGIN"
+        android:background="@drawable/login_back"
         android:layout_below="@id/login_password"
         android:layout_centerHorizontal="true"
-        android:textColor="@android:color/white"
-        android:textSize="18sp" />
+        android:contentDescription="Login" />
+
+    <ImageButton
+        android:id="@+id/create_account_txt"
+        android:layout_width="285dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="8dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/signup_back"
+        android:text="or create an account"
+        android:layout_below="@id/login_btn"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="Signup" />
 
     <TextView
         android:id="@+id/forgot_pass_txt"
@@ -86,20 +82,10 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:text="Forgot password?"
-        android:layout_below="@id/login_btn"
+        android:layout_below="@id/create_account_txt"
+        android:textSize="15sp"
         android:layout_centerHorizontal="true"
-        android:textColor="#9A81C0" />
-
-    <TextView
-        android:id="@+id/create_account_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="or create an account"
-        android:layout_below="@id/forgot_pass_txt"
-        android:layout_centerHorizontal="true"
-        android:textColor="#9A81C0" />
+        android:textColor="#FFFFFF" />
 
 
     <TextView

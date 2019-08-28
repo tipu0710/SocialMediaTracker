@@ -5,7 +5,10 @@ import android.app.usage.UsageStatsManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.socialmediatracker.Activities.Alert;
 import com.example.socialmediatracker.DBoperation.DBcreation;
@@ -38,19 +41,32 @@ public class AlarmReceiver extends BroadcastReceiver {
             long usedTime = appInfo.get(i).getTotalTimeInForeground();
             String packageName = appInfo.get(i).getPackageName();
             DatabaseModel databaseModel = dBcreation.getDataByPackage(packageName);
-            if (!pkgList.contains(packageName)){
+            PackageManager mPm = context.getPackageManager();
+            boolean isSystemApp = false;
+            ApplicationInfo applicationInfo;
+            try {
+                applicationInfo = mPm.getApplicationInfo(foregroundPackageName, 0);
+                isSystemApp = ((applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
+                Log.i("SystemApps", foregroundPackageName + ", isSystemApp="+isSystemApp);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+            if (!pkgList.contains(foregroundPackageName) && !isSystemApp){
+                Log.v("app", "new");
                 dBcreation.AddAppInfo(new DatabaseModel(packageName, 2*3600*1000));
-            }
-            long saveTime = databaseModel.getTime();
-            if (foregroundPackageName.equals(packageName)){
-                if (saveTime<= usedTime){
-                    x.putExtra("appName", AppInfo.GetAppName(packageName,context));
-                    x.putExtra("packageName", packageName);
-                    x.putExtra("usedTime", usedTime);
-                    context.startActivity(x);
+            }else {
+                long saveTime = databaseModel.getTime();
+                if (foregroundPackageName.equals(packageName)){
+                    if (saveTime<= usedTime && usedTime>6*60*1000){
+                        x.putExtra("appName", AppInfo.GetAppName(packageName,context));
+                        x.putExtra("packageName", packageName);
+                        x.putExtra("usedTime", usedTime);
+                        context.startActivity(x);
+                    }
+                    break;
                 }
-                break;
             }
+
         }
     }
 }

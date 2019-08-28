@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/back"
+    tools:context=".Activities.StartActivity">
+    
+    <TextView
+        android:text="SOCIAL MEDIA\nTRACKER"
+        android:id="@+id/intro"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="200dp"
+        android:layout_width="210dp"
+        android:layout_height="80dp" />
+    <ImageView
+        android:layout_width="109dp"
+        android:layout_height="5dp"
+        android:background="@drawable/underline"
+        android:layout_below="@id/intro"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/underline"/>
+    <TextView
+        android:id="@+id/text_w"
+        android:layout_width="180dp"
+        android:layout_height="20dp"
+        android:text="LET'S BREAK THE BARRIER"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_below="@id/underline"
+        android:layout_marginTop="8dp"
+        android:textAlignment="center"
+        android:layout_centerHorizontal="true"/>
+    
+    <ImageButton
+        android:id="@+id/get_started_btn"
+        android:layout_below="@id/text_w"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"
+        android:layout_width="220dp"
+        android:layout_height="68dp"
+        android:background="@drawable/getstarted"/>
+
+</RelativeLayout>

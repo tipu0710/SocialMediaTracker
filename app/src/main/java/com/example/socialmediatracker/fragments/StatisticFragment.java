@@ -2,8 +2,6 @@ package com.example.socialmediatracker.fragments;
 
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
-import android.content.Context;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -16,9 +14,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.socialmediatracker.Activities.AppUsagesActivity;
-import com.example.socialmediatracker.Activities.Main2Activity;
-import com.example.socialmediatracker.DBoperation.DBcreation;
-import com.example.socialmediatracker.DBoperation.DatabaseModel;
 import com.example.socialmediatracker.R;
 import com.example.socialmediatracker.helper.AppInfo;
 import com.example.socialmediatracker.helper.DayAxisValueFormatter;

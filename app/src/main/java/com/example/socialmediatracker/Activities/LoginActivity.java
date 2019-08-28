@@ -6,17 +6,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dd.processbutton.iml.ActionProcessButton;
 import com.example.socialmediatracker.R;
 import com.example.socialmediatracker.helper.AppInfo;
 import com.github.ybq.android.spinkit.sprite.Sprite;
@@ -25,19 +24,17 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.libizo.CustomEditText;
 
 import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity {
 
     EditText emailEt, passwordEt;
-    Button loginBtn;
-    TextView signUpTv,trans, forgotPassTv;
+    ImageButton loginBtn, signUpBtn;
+    TextView trans, forgotPassTv;
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
     private Sprite doubleBounce;
@@ -50,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         emailEt = findViewById(R.id.login_email);
         passwordEt = findViewById(R.id.login_password);
         loginBtn = findViewById(R.id.login_btn);
-        signUpTv = findViewById(R.id.create_account_txt);
+        signUpBtn = findViewById(R.id.create_account_txt);
         progressBar = findViewById(R.id.progress_bar_login);
         forgotPassTv = findViewById(R.id.forgot_pass_txt);
         trans = findViewById(R.id.trans_login);
@@ -58,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        signUpTv.setOnClickListener(new View.OnClickListener() {
+        signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(LoginActivity.this, SignupActivity.class));
@@ -112,7 +109,8 @@ public class LoginActivity extends AppCompatActivity {
                                        });
                                    }
 
-                                    startActivity(new Intent(LoginActivity.this, EmptyActivity.class));
+                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                   finish();
                                 }else {
                                     Toast.makeText(LoginActivity.this, "Please verify your email first!", Toast.LENGTH_LONG).show();
                                 }

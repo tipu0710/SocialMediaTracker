@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_terms"
+    tools:context=".Activities.TermsAndConditionActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="258dp"
+            android:layout_height="33dp"
+            android:layout_centerHorizontal="true"
+            android:text="Terms and conditions"
+            android:textAlignment="center"
+            android:textSize="25sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_marginTop="40dp"
+            android:id="@+id/main_text"/>
+        <TextView
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/warning_text"
+            android:textAlignment="center"
+            android:textSize="17sp"
+            android:textColor="@color/white"
+            android:layout_marginTop="20dp"
+            android:id="@+id/warning_text"
+            android:layout_below="@id/main_text"/>
+
+        <TextView
+            android:layout_width="322dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="textStart"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:text="@string/conditions_text"
+            android:layout_below="@id/warning_text"
+            android:layout_marginTop="20dp"
+            android:id="@+id/conditions_text"/>
+        
+        <LinearLayout
+            android:layout_width="322dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/conditions_text"
+            android:id="@+id/check_box_holder"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp">
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/read_check"
+                android:text="I read all the terms carefully."
+                android:textColor="@color/white"
+                android:buttonTint="@color/white"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/accept_check"
+                android:text="A accept all terms and conditions."
+                android:textColor="@color/white"
+                android:buttonTint="@color/white"/>
+        </LinearLayout>
+        
+        <ImageButton
+            android:id="@+id/terms_continue_btn"
+            android:background="@drawable/continue_terms"
+            android:layout_width="121dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/check_box_holder"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"/>
+    </RelativeLayout>
+
+</ScrollView>

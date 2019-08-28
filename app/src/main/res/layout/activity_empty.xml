@@ -4,15 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.EmptyActivity">
+    android:background="@drawable/back"
+    tools:context=".Activities.PermissionActivity">
 
     <ImageView
         android:id="@+id/icon_warning"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"/>
+        android:layout_marginTop="30dp"
+        android:src="@drawable/icon" />
 
     <TextView
         android:id="@+id/name_warning"
@@ -20,33 +21,47 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/icon_warning"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:textAlignment="center"
-        android:textColor="@color/colorPrimary"
-        android:textSize="14sp"
-        android:text="@string/app_name"/>
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:text="SOCIAL MEDIA\nTRACKER"/>
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="5dp"
+        android:src="@drawable/bar"
+        android:id="@+id/bar"
+        android:layout_below="@id/name_warning"
+        android:layout_centerHorizontal="true"/>
+    <ImageView
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:id="@+id/emo"
+        android:src="@drawable/emo"
+        android:layout_below="@id/bar"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"/>
     <TextView
         android:id="@+id/warning"
-        android:layout_width="250dp"
+        android:layout_width="336dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/name_warning"
+        android:layout_below="@id/emo"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:textAlignment="center"
-        android:textColor="#FF5722"
+        android:textColor="@color/white"
         android:textSize="18sp"
         android:text="@string/warning"/>
 
-    <TextView
+    <ImageView
         android:id="@+id/open_settings"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        android:layout_width="172dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="30dp"
         android:layout_centerHorizontal="true"
-        android:textAlignment="center"
-        android:textColor="#4CAF50"
-        android:padding="10dp"
-        android:textSize="14sp"
         android:layout_below="@id/warning"
-        android:text="Click here to open settings!"/>
+        android:background="@drawable/permission"/>
 
 </RelativeLayout>

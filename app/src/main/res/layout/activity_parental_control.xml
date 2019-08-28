@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/back"
+    tools:context=".Activities.ParentalControlActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/parent_icon"
+            android:layout_width="118dp"
+            android:layout_height="118dp"
+            android:src="@drawable/parent_icon"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"/>
+
+        <TextView
+            android:id="@+id/parent_text"
+            android:layout_width="320dp"
+            android:layout_height="296dp"
+            android:layout_below="@id/parent_icon"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="textStart"
+            android:text="@string/parent_text"
+            android:textSize="18sp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/white"/>
+        
+        <Switch
+            android:id="@+id/switch_agree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Agree?   "
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:layout_below="@id/parent_text"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"/>
+
+        <Button
+            android:id="@+id/parent_skip_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="skip"
+            android:layout_below="@id/switch_agree"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+
+</ScrollView>

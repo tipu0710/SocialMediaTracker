@@ -26,5 +26,12 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="about">Social media relates to websites and apps intended to allow individuals to share content in a fast, efficient and real-time manner which makes it easier to create virtual networks and communities. There is no doubt that social media has become an important means of communication for students, particularly at the higher education level. Apart from the positive impacts of social media, multiple dark sides, especially for students, have become a matter of great concern at presenSocial media kills a lots of time of students which responsible for poor academic result. We found that excessive use of social media adversely related to student\'s academic result.This application is specially designed for students to keep them-self away from addictive use of social media.</string>
-    <string name="warning">Please accept the permission to use the app</string>
+    <string name="warning">To use this application, some permissions
+are required. The ethical factors of the users
+ will be closely assured to keep their privacy strictly
+ and confidentially secret</string>
+    <string name="parent_text">Parental control allows parents to restrict the excessive use of their child\'s phone.\nThey will be able to monitor the spending time of their children on social networking sites and set individual application deadlines. If kids cross the time limit, the parents will receive a warning message on the device of the parents.\n\nIf you agree, your parents will have access to monitor your device</string>
+    <string name="agree">Agree?</string>
+    <string name="warning_text"><![CDATA[Before continuing, it is requested to take a pause and read all terms & condition carefully.]]></string>
+    <string name="conditions_text">1. We don\'t collect or manipulate user\'s personal information. But enabling parental control, user may allow third person to remotely control his / her device. In this fact Social Media Tracker Team is not responsible anymore. \n\n2. We don\'t use any personal database to store information. For backend, firebase is used and all google firebase policies are strictly followed. \n\n3. This application is only made for protecting addictive use of smartphone and social media. For any kind of missuses, Social Media Tracker Team is not responsible.</string>
 </resources>

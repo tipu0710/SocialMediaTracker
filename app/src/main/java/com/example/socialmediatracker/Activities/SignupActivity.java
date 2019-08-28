@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +32,7 @@ import java.util.HashMap;
 
 public class SignupActivity extends AppCompatActivity{
     EditText emailEt, passwordEt, nameEt;
-    Button signUpBtn;
+    private ImageButton signUpBtn;
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
     private Sprite doubleBounce;

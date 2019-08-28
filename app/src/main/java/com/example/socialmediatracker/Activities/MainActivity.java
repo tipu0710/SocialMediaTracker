@@ -38,7 +38,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class Main2Activity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private FirebaseAuth mAuth;
@@ -89,9 +89,9 @@ public class Main2Activity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            startActivity(new Intent(Main2Activity.this, AppUsagesActivity.class));
+            startActivity(new Intent(MainActivity.this, AppUsagesActivity.class));
         } else if (id == R.id.nav_gallery) {
-            startActivity(new Intent(Main2Activity.this, StaticActivity.class));
+            startActivity(new Intent(MainActivity.this, StaticActivity.class));
         } else if (id == R.id.nav_share) {
             shareApplication();
         }else if (id == R.id.nav_about) {
@@ -106,7 +106,7 @@ public class Main2Activity extends AppCompatActivity
     }
     private void logout() {
         mAuth.signOut();
-        startActivity(new Intent(Main2Activity.this, LoginActivity.class));
+        startActivity(new Intent(MainActivity.this, LoginActivity.class));
     }
 
     @Override
@@ -123,7 +123,7 @@ public class Main2Activity extends AppCompatActivity
 
         // MIME of .apk is "application/vnd.android.package-archive".
         // but Bluetooth does not accept this. Let's use "*/*" instead.
-        intent.setType("*/*");
+        intent.setType("application/vnd.android.package-archive");
 
         // Append file and send Intent
         File originalApk = new File(filePath);
@@ -166,8 +166,8 @@ public class Main2Activity extends AppCompatActivity
 
     private void showDialog() {
 
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(Main2Activity.this);
-        View dialogView = LayoutInflater.from(Main2Activity.this).inflate(R.layout.about_dialog, null);
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
+        View dialogView = LayoutInflater.from(MainActivity.this).inflate(R.layout.about_dialog, null);
 
         TextView appNameD = dialogView.findViewById(R.id.about_tv);
         View view = dialogView.findViewById(R.id.about);
