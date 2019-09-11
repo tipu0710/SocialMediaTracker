@@ -17,20 +17,14 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="8dp" />
 
-    <com.jackandphantom.circularimageview.CircleImage
+    <ImageView
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:id="@+id/app_icon_dialog"
         android:layout_gravity="center"
         android:layout_marginTop="85dp"
         android:layout_marginBottom="8dp"
-        android:layout_centerHorizontal="true"
-        app:border_width="3dp"
-        app:border_color="#ed2e2e"
-        app:add_shadow="true"
-        app:shadow_color="#a10909"
-        app:shadow_radius="20"
-        android:background="@drawable/ic_insert_chart_black_24dp" />
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/app_name_dialog"

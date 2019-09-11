@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -39,7 +40,9 @@ public class StatisticFragment extends Fragment {
     private BarChart barChart;
     private ProgressBar progressBar;
     private Sprite doubleBounce;
+    private TextView warning;
     private int position;
+    private View cont;
 
     public StatisticFragment() {
         // Required empty public constructor
@@ -60,6 +63,8 @@ public class StatisticFragment extends Fragment {
         TextView textView = view.findViewById(R.id.text_view);
         barChart = view.findViewById(R.id.chart);
         progressBar = view.findViewById(R.id.progress);
+        warning = view.findViewById(R.id.zero_data_tv);
+        cont = view.findViewById(R.id.hole_container);
         doubleBounce = new DoubleBounce();
 
         if (position==0){
@@ -117,54 +122,69 @@ public class StatisticFragment extends Fragment {
     }
 
     private void createBar(String s, long divided) {
-        barChart.setDrawBarShadow(false);
-        barChart.setDrawValueAboveBar(true);
-        barChart.animateXY(1000,1000);
+        if (usageStats.size()>0){
+            warning.setVisibility(View.GONE);
+            cont.setVisibility(View.VISIBLE);
 
-        ArrayList<BarEntry> barEntries = new ArrayList<>();
-        List<String> dailyAppName = new ArrayList<>();
-        for (int i = 0; i< usageStats.size(); i++){
-            UsageStats pkgStats = usageStats.get(i);
-            long time = pkgStats.getTotalTimeInForeground() / divided;
-            String packageName = usageStats.get(i).getPackageName();
-            String name = AppInfo.GetAppName(packageName, getContext());
-            dailyAppName.add(name);
-            barEntries.add(new BarEntry(i, time));
+            barChart.setDrawBarShadow(false);
+            barChart.setDrawValueAboveBar(true);
+            barChart.animateXY(1000,1000);
+
+            ArrayList<BarEntry> barEntries = new ArrayList<>();
+            List<String> dailyAppName = new ArrayList<>();
+            for (int i = 0; i< usageStats.size(); i++){
+                UsageStats pkgStats = usageStats.get(i);
+                long time = pkgStats.getTotalTimeInForeground() / divided;
+                String packageName = usageStats.get(i).getPackageName();
+                String name = AppInfo.GetAppName(packageName, getContext());
+                dailyAppName.add(name);
+                barEntries.add(new BarEntry(i, time));
+            }
+            IAxisValueFormatter xDAxisValueFormatter = new DayAxisValueFormatter(barChart,dailyAppName);
+            XAxis xAxis = barChart.getXAxis();
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xAxis.setDrawGridLines(false);
+            xAxis.setGranularity(1f); // only intervals of 1 day
+            xAxis.setLabelCount(dailyAppName.size());
+            xAxis.setValueFormatter(xDAxisValueFormatter);
+
+            YAxis leftAxis = barChart.getAxisLeft();
+            leftAxis.setLabelCount(10, false);
+            leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+            leftAxis.setSpaceTop(15f);
+            leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+
+            YAxis rightAxis = barChart.getAxisRight();
+            rightAxis.setEnabled(false);
+
+
+            Legend l = barChart.getLegend();
+            l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+            l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+            l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+            l.setDrawInside(false);
+            l.setForm(Legend.LegendForm.SQUARE);
+            l.setFormSize(9f);
+            l.setTextSize(11f);
+
+            BarDataSet barDataSet = new BarDataSet(barEntries, s);
+            barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+            BarData barData = new BarData(barDataSet);
+            barData.setBarWidth(0.5f);
+            barChart.setData(barData);
+            barChart.getDescription().setEnabled(false);
+            barChart.setVisibleXRangeMaximum(3f);
+            barChart.invalidate();
+        }else {
+            warning.setVisibility(View.VISIBLE);
+            cont.setVisibility(View.GONE);
+            if (position==0){
+                warning.setText("Daily data not available\nin your device");
+            }else if (position==1){
+                warning.setText("Weekly data not available\nin your device");
+            }else {
+                warning.setText("Monthly data not available\nin your device");
+            }
         }
-        IAxisValueFormatter xDAxisValueFormatter = new DayAxisValueFormatter(barChart,dailyAppName);
-        XAxis xAxis = barChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setDrawGridLines(false);
-        xAxis.setGranularity(1f); // only intervals of 1 day
-        xAxis.setLabelCount(dailyAppName.size());
-        xAxis.setValueFormatter(xDAxisValueFormatter);
-
-        YAxis leftAxis = barChart.getAxisLeft();
-        leftAxis.setLabelCount(10, false);
-        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-        leftAxis.setSpaceTop(15f);
-        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
-
-        YAxis rightAxis = barChart.getAxisRight();
-        rightAxis.setEnabled(false);
-
-
-        Legend l = barChart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
-        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-        l.setDrawInside(false);
-        l.setForm(Legend.LegendForm.SQUARE);
-        l.setFormSize(9f);
-        l.setTextSize(11f);
-
-        BarDataSet barDataSet = new BarDataSet(barEntries, s);
-        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        BarData barData = new BarData(barDataSet);
-        barData.setBarWidth(0.5f);
-        barChart.setData(barData);
-        barChart.getDescription().setEnabled(false);
-        barChart.setVisibleXRangeMaximum(3f);
-        barChart.invalidate();
     }
 }

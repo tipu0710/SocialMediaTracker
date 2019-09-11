@@ -43,10 +43,10 @@
                     android:background="@drawable/ic_insert_chart_black_24dp"
                     android:id="@+id/app1"
                     android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
                 <TextView
-                    android:text="appName"
+                    android:text="packageName"
                     android:layout_marginTop="5dp"
                     android:layout_gravity="center"
                     android:textAlignment="center"
@@ -64,8 +64,8 @@
 
                 <ImageView
                     android:id="@+id/app2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:background="@drawable/ic_insert_chart_black_24dp" />
 
@@ -77,7 +77,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
-                    android:text="appName" />
+                    android:text="packageName" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="vertical"
@@ -89,10 +89,10 @@
                     android:background="@drawable/ic_insert_chart_black_24dp"
                     android:id="@+id/app3"
                     android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
                 <TextView
-                    android:text="appName"
+                    android:text="packageName"
                     android:layout_marginTop="5dp"
                     android:layout_gravity="center"
                     android:textAlignment="center"
@@ -114,7 +114,6 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="20dp"
             android:id="@+id/pie">
-
         </com.github.mikephil.charting.charts.PieChart>
     </RelativeLayout>
 

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,14 +23,19 @@ import com.example.socialmediatracker.helper.AppInfo;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.DoubleBounce;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.HashMap;
+
+import static com.example.socialmediatracker.Activities.MonitorActivity.CHILD_DEVICE_ID;
+import static com.example.socialmediatracker.Activities.SignupActivity.CHILD;
+import static com.example.socialmediatracker.Activities.SignupActivity.PARENT;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -39,6 +46,8 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private Sprite doubleBounce;
     private DatabaseReference databaseReference;
+    private RadioButton loginAsParent;
+    private boolean bo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,9 +60,23 @@ public class LoginActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress_bar_login);
         forgotPassTv = findViewById(R.id.forgot_pass_txt);
         trans = findViewById(R.id.trans_login);
+        loginAsParent = findViewById(R.id.login_as_parent);
         doubleBounce = new DoubleBounce();
 
+        if (!AppInfo.PreferencesHelper.isParentalControlOn(this)){
+            loginBtn.setBackground(getDrawable(R.drawable.set_btn));
+        }
+
         mAuth = FirebaseAuth.getInstance();
+
+        emailEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (!b){
+                    checkEmailExistsOrNot(emailEt.getText().toString());
+                }
+            }
+        });
 
         signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,12 +85,32 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        bo = loginAsParent.isChecked();
+
+        loginAsParent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (bo){
+                    loginAsParent.setChecked(false);
+                    bo = false;
+                }else {
+                    loginAsParent.setChecked(true);
+                    bo = true;
+                }
+            }
+        });
+
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = emailEt.getText().toString();
-                String pass = passwordEt.getText().toString();
-
+                final String email = emailEt.getText().toString();
+                final String pass = passwordEt.getText().toString();
+                final String relation;
+                if (loginAsParent.isChecked()){
+                    relation = PARENT;
+                }else {
+                    relation = CHILD;
+                }
 
                 if (email.isEmpty()){
                     emailEt.setError("Enter email");
@@ -83,38 +126,41 @@ public class LoginActivity extends AppCompatActivity {
                     mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            progressBar.setVisibility(View.GONE);
-                            trans.setVisibility(View.GONE);
-                            loginBtn.setVisibility(View.VISIBLE);
                             if (task.isSuccessful()){
                                 if (mAuth.getCurrentUser().isEmailVerified()){
-                                   if (getIntent().getBooleanExtra("bool",false)){
-                                       String UID = mAuth.getCurrentUser().getUid();
-                                       databaseReference = FirebaseDatabase.getInstance().getReference().child(getString(R.string.user)).child(UID);
-                                       String deviceToken = FirebaseInstanceId.getInstance().getToken();
-                                       HashMap<String, String> userMap = new HashMap<>();
-                                       userMap.put(getString(R.string.name), getIntent().getStringExtra("name"));
-                                       userMap.put("device_token", deviceToken);
+                                    String UID = mAuth.getCurrentUser().getUid();
+                                    String deviceToken = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
-                                       databaseReference.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                           @Override
-                                           public void onComplete(@NonNull Task<Void> task) {
-                                               if (task.isSuccessful()){
-                                                   Log.v("SignUp", "SignUp and data saved successfully!");
-                                               }else {
-                                                   // If sign in fails, display a message to the user.
-                                                   Log.v("SignUp", task.getException().getMessage());
-                                               }
-                                           }
-                                       });
-                                   }
+                                    if (relation.equals(CHILD)){
+                                        databaseReference = FirebaseDatabase.getInstance().getReference().child(getString(R.string.user)).child(UID).child(CHILD_DEVICE_ID);
 
-                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                   finish();
+                                    }else {
+                                        databaseReference = FirebaseDatabase.getInstance().getReference().child(getString(R.string.user)).child(UID).child("parent_device_id");
+                                    }
+
+                                    databaseReference.setValue(deviceToken).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            AppInfo.PreferencesHelper.setIsChild(getApplicationContext(), relation.equals(CHILD));
+                                            AppInfo.PreferencesHelper.setParentalControl(getApplicationContext(), true);
+                                            progressBar.setVisibility(View.GONE);
+                                            trans.setVisibility(View.GONE);
+                                            loginBtn.setVisibility(View.VISIBLE);
+                                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                            finish();
+                                        }
+                                    });
+
                                 }else {
+                                    progressBar.setVisibility(View.GONE);
+                                    trans.setVisibility(View.GONE);
+                                    loginBtn.setVisibility(View.VISIBLE);
                                     Toast.makeText(LoginActivity.this, "Please verify your email first!", Toast.LENGTH_LONG).show();
                                 }
                             }else {
+                                progressBar.setVisibility(View.GONE);
+                                trans.setVisibility(View.GONE);
+                                loginBtn.setVisibility(View.VISIBLE);
                                 Toast.makeText(LoginActivity.this, ""+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -186,5 +232,28 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         dialog.show();
+    }
+
+    void checkEmailExistsOrNot(String email){
+        if (!email.isEmpty() && AppInfo.isConnectedToNetwork(this)){
+            mAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                @Override
+                public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                    if (task.getResult().getSignInMethods().size() == 0){
+                        // email not existed
+                        emailEt.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_mail, 0, R.drawable.ic_clear_black_24dp, 0);
+                    }else {
+                        // email existed
+                        emailEt.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_mail, 0, R.drawable.ic_check_black_24dp, 0);
+                    }
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
     }
 }

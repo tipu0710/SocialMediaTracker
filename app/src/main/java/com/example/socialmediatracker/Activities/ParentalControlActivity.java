@@ -3,16 +3,13 @@ package com.example.socialmediatracker.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
 
 import com.example.socialmediatracker.R;
-
-import static com.example.socialmediatracker.Activities.StartActivity.IS_OLD;
-import static com.example.socialmediatracker.Activities.StartActivity.STARTED_PRE;
+import com.example.socialmediatracker.helper.AppInfo;
 
 public class ParentalControlActivity extends AppCompatActivity {
 
@@ -38,18 +35,10 @@ public class ParentalControlActivity extends AppCompatActivity {
         skipBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                changePreference();
+                AppInfo.PreferencesHelper.setAsInstalledBefore(ParentalControlActivity.this);
                 startActivity(new Intent(ParentalControlActivity.this, MainActivity.class));
                 finish();
             }
         });
-    }
-
-    private void changePreference(){
-        SharedPreferences preferences = getSharedPreferences(STARTED_PRE, MODE_PRIVATE);
-        SharedPreferences.Editor ed;
-        ed = preferences.edit();
-        ed.putBoolean(IS_OLD, true);
-        ed.apply();
     }
 }

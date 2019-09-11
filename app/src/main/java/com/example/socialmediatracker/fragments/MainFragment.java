@@ -120,7 +120,6 @@ public class MainFragment extends Fragment {
             if (size>0){
                 createBar();
             }
-            AppInfo.SetAlarm(getContext(), 0);
             progressBar.setVisibility(View.GONE);
         }
 
@@ -155,6 +154,9 @@ public class MainFragment extends Fragment {
                 timeUsed[i]=time;
             }
             totalUsagesDay = totalUsagesDay+time;
+            if (totalUsagesDay == 0){
+                totalUsagesDay = 1;
+            }
             String packageName = usageStats.get(i).getPackageName();
             if (databaseStatus){
                 dBcreation.AddAppInfo(new DatabaseModel(packageName, 2*3600*1000));

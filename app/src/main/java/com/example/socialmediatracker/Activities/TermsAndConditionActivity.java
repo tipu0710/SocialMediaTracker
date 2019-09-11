@@ -3,18 +3,14 @@ package com.example.socialmediatracker.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.socialmediatracker.R;
-
-import static com.example.socialmediatracker.Activities.StartActivity.IS_OLD;
-import static com.example.socialmediatracker.Activities.StartActivity.STARTED_PRE;
+import com.example.socialmediatracker.helper.AppInfo;
 
 public class TermsAndConditionActivity extends AppCompatActivity {
 
@@ -35,11 +31,12 @@ public class TermsAndConditionActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (read.isChecked()){
                     if (accept.isChecked()){
-                        changePreference();
+                        AppInfo.PreferencesHelper.setAsInstalledBefore(getApplicationContext());
+                        AppInfo.PreferencesHelper.setTermsConditionsAsRead(getApplicationContext());
                         startActivity(new Intent(TermsAndConditionActivity.this, LoginActivity.class));
                         finish();
                     }else {
-                        Toast.makeText(TermsAndConditionActivity.this, "Accept terms and conditions first!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(TermsAndConditionActivity.this, "To continue accept terms and conditions!", Toast.LENGTH_LONG).show();
                     }
                 }else {
                     Toast.makeText(TermsAndConditionActivity.this, "Read carefully terms and conditions first!", Toast.LENGTH_LONG).show();
@@ -48,11 +45,11 @@ public class TermsAndConditionActivity extends AppCompatActivity {
         });
     }
 
-    private void changePreference(){
-        SharedPreferences preferences = getSharedPreferences(STARTED_PRE, MODE_PRIVATE);
-        SharedPreferences.Editor ed;
-        ed = preferences.edit();
-        ed.putBoolean(IS_OLD, true);
-        ed.apply();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (AppInfo.PreferencesHelper.isReadTermsConditions(this)){
+            startActivity(new Intent(TermsAndConditionActivity.this, LoginActivity.class));
+        }
     }
 }

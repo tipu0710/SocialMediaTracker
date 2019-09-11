@@ -5,16 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dd.processbutton.iml.ActionProcessButton;
 import com.example.socialmediatracker.R;
 import com.example.socialmediatracker.helper.AppInfo;
 import com.github.ybq.android.spinkit.sprite.Sprite;
@@ -24,11 +22,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.iid.FirebaseInstanceId;
-
-import java.util.HashMap;
 
 public class SignupActivity extends AppCompatActivity{
     EditText emailEt, passwordEt, nameEt;
@@ -37,6 +30,9 @@ public class SignupActivity extends AppCompatActivity{
     private ProgressBar progressBar;
     private Sprite doubleBounce;
     private TextView trans;
+
+    public static final String CHILD = "child";
+    public static final String PARENT = "parent";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +62,7 @@ public class SignupActivity extends AppCompatActivity{
         final String name = nameEt.getText().toString();
         String mail = emailEt.getText().toString();
         String pass = passwordEt.getText().toString();
+        final String isChild;
 
         if (name.isEmpty()){
             nameEt.setError("Enter name");
@@ -101,7 +98,7 @@ public class SignupActivity extends AppCompatActivity{
                                             startActivity(intent);
                                             finish();
                                         }else {
-                                            Toast.makeText(SignupActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(SignupActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                         }
                                     }
                                 });
@@ -110,7 +107,7 @@ public class SignupActivity extends AppCompatActivity{
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Toast.makeText(SignupActivity.this, "Authentication failed. "+task.getException().getMessage(),
-                                        Toast.LENGTH_SHORT).show();
+                                        Toast.LENGTH_LONG).show();
                             }
 
                         }
@@ -123,4 +120,5 @@ public class SignupActivity extends AppCompatActivity{
         super.onBackPressed();
         startActivity(new Intent(SignupActivity.this, LoginActivity.class));
     }
+
 }

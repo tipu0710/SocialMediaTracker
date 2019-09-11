@@ -4,14 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.socialmediatracker.DBoperation.DBcreation;
-import com.example.socialmediatracker.DBoperation.DatabaseModel;
 import com.example.socialmediatracker.R;
 import com.example.socialmediatracker.helper.AppInfo;
 
@@ -28,7 +26,7 @@ public class Alert extends AppCompatActivity {
         setContentView(R.layout.activity_alert);
         getSupportActionBar().hide();
         Intent intent = getIntent();
-        String appName = intent.getStringExtra("appName");
+        final String appName = intent.getStringExtra("appName");
         final String packageName = intent.getStringExtra("packageName");
         usedTime = intent.getLongExtra("usedTime",2*3600*1000);
         appNameTv = findViewById(R.id.app_name_service_tv);
@@ -36,15 +34,16 @@ public class Alert extends AppCompatActivity {
         addMoreTimeBtn = findViewById(R.id.add_more_btn);
         appNameTv.setText("You are using too much time on "+appName+". Take a break!");
         appIcon.setImageDrawable(AppInfo.getAppIconByPackageName(packageName,this));
-        
+        Log.v("MailSend", "started");
         addMoreTimeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.v("MailSend", "btn click");
                 Toast.makeText(Alert.this, "Added more 10 minute!", Toast.LENGTH_SHORT).show();
                 AppInfo.SetAlarm(Alert.this, 10);
-                finish();
-                System.exit(0);
+                finishAffinity();
             }
         });
     }
+
 }

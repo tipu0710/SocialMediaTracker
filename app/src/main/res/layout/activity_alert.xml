@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.Alert">
+    tools:context=".Activities.Alert"
+    android:background="@drawable/back">
 
     <ImageView
         android:id="@+id/app_icon_service"
@@ -19,6 +20,7 @@
         android:layout_below="@id/app_icon_service"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
+        android:textColor="@color/white"
         android:text="AppName"/>
 
     <Button
@@ -26,6 +28,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="add more 10 min"
+        android:background="@color/colorPrimary"
+        android:paddingLeft="10dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:paddingRight="10dp"
         android:layout_below="@id/app_name_service_tv"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"/>

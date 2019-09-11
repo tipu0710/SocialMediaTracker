@@ -6,26 +6,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.socialmediatracker.R;
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.socialmediatracker.helper.AppInfo;
 import com.google.firebase.auth.FirebaseUser;
-
-import static com.example.socialmediatracker.Activities.StartActivity.IS_OLD;
-import static com.example.socialmediatracker.Activities.StartActivity.STARTED_PRE;
 
 
 public class PermissionActivity extends AppCompatActivity {
 
-    private SharedPreferences startPre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +36,11 @@ public class PermissionActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        startPre = getSharedPreferences(STARTED_PRE, MODE_PRIVATE);
         if(hasUsageStatsPermission(PermissionActivity.this)){
-            boolean b = startPre.getBoolean(IS_OLD, false);
-            if (!b){
+            if (!AppInfo.PreferencesHelper.isInstalledBefore(this)){
                 startActivity(new Intent(PermissionActivity.this, ParentalControlActivity.class));
                 finish();
             }else {
-                Log.v("isOld","onStart: "+startPre.getBoolean(IS_OLD, false));
                 startActivity(new Intent(PermissionActivity.this, MainActivity.class));
                 finish();
             }
@@ -86,11 +75,10 @@ public class PermissionActivity extends AppCompatActivity {
 
     private void checkPermission(){
         if(hasUsageStatsPermission(PermissionActivity.this)){
-            if (startPre.getBoolean(IS_OLD, false)){
+            if (!AppInfo.PreferencesHelper.isInstalledBefore(PermissionActivity.this)){
                 startActivity(new Intent(PermissionActivity.this, ParentalControlActivity.class));
                 finish();
             }else {
-                Log.v("isOld","CheckPermission: "+startPre.getBoolean(IS_OLD, false));
                 startActivity(new Intent(PermissionActivity.this, MainActivity.class));
                 finish();
             }
@@ -113,11 +101,10 @@ public class PermissionActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 12 && resultCode == RESULT_OK){
             if(hasUsageStatsPermission(PermissionActivity.this)){
-                if (startPre.getBoolean(IS_OLD, false)){
+                if (!AppInfo.PreferencesHelper.isInstalledBefore(this)){
                     startActivity(new Intent(PermissionActivity.this, ParentalControlActivity.class));
                     finish();
                 }else {
-                    Log.v("isOld","OnActivity: "+startPre.getBoolean(IS_OLD, false));
                     startActivity(new Intent(PermissionActivity.this, MainActivity.class));
                     finish();
                 }

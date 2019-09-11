@@ -1,10 +1,8 @@
 package com.example.socialmediatracker.Adapter;
 
 import android.app.AlertDialog;
-import android.app.usage.UsageStats;
 import android.content.Context;
 import android.graphics.Color;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,75 +21,63 @@ import com.example.socialmediatracker.DBoperation.DBcreation;
 import com.example.socialmediatracker.DBoperation.DatabaseModel;
 import com.example.socialmediatracker.R;
 import com.example.socialmediatracker.helper.AppInfo;
+import com.example.socialmediatracker.helper.AppInformation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jackandphantom.circularimageview.CircleImage;
 
-import java.text.DateFormat;
-import java.util.ArrayList;
+import java.util.List;
 
 import antonkozyriatskyi.circularprogressindicator.CircularProgressIndicator;
 
+import static com.example.socialmediatracker.Activities.SignupActivity.CHILD;
+import static com.example.socialmediatracker.Activities.SignupActivity.PARENT;
 
-public class AppAdapter extends RecyclerView.Adapter<AppAdapter.ViewHolder> {
 
+public class MonitorAdapter  extends RecyclerView.Adapter<MonitorAdapter.ViewHolder> {
     private Context context;
-    private ArrayList<UsageStats> mPackageStats;
-    public AppAdapter(Context context, ArrayList<UsageStats> packageList) {
+    private List<AppInformation> appInformationList;
+    private String deviceToken;
+
+    public MonitorAdapter(Context context, List<AppInformation> appInformationList, String deviceToken) {
         this.context = context;
-        this.mPackageStats = packageList;
+        this.appInformationList = appInformationList;
+        this.deviceToken = deviceToken;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View row = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_list_layout, parent, false);
-        return new ViewHolder(row);
+        return new MonitorAdapter.ViewHolder(row);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        final UsageStats pkgStats = mPackageStats.get(position);
-        if (pkgStats!=null){
-            DBcreation dBcreation = new DBcreation(context);
-            final String packageName = mPackageStats.get(position).getPackageName();
-            long fixedTime = dBcreation.getDataByPackage(packageName).getTime();
-            long usedTime = pkgStats.getTotalTimeInForeground();
-            Log.v("CompareTimes", fixedTime+"  "+usedTime);
-            holder.appIcon.setImageDrawable(AppInfo.getAppIconByPackageName(packageName,context));
-            holder.appName.setText(AppInfo.GetAppName(packageName,context));
-            if (fixedTime>usedTime){
-                holder.appUsagesTime.setTextColor(Color.parseColor("#FF4CAF50"));
-            }else {
-                holder.appUsagesTime.setTextColor(Color.parseColor("#ed2e2e"));
+        holder.appName.setText(appInformationList.get(position).getAppName());
+        holder.appUsagesTime.setText(AppInfo.getTime(appInformationList.get(position).getUsagesTime()));
+        holder.appIcon.setImageBitmap(AppInfo.getImage(appInformationList.get(position).getAppIcon()));
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog(appInformationList.get(position).getPackageName(), context, position);
             }
-            holder.appUsagesTime.setText(AppInfo.getTime(usedTime));
-            holder.lastTimeUsages.setText(AppInfo.getTime(fixedTime));
-
-            holder.view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    /*if (!AppInfo.PreferencesHelper.isParentalControlOn(context) || !AppInfo.PreferencesHelper.isChild(context)){
-                        showDialog(packageName, context, pkgStats, position);
-                    }else {
-                        Toast.makeText(context, "You cannot change daily usages time limit \nwhile parental control is on!", Toast.LENGTH_SHORT).show();
-                    }*/
-
-                    showDialog(packageName, context, pkgStats, position);
-                }
-            });
-
-        }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return mPackageStats.size();
+        return appInformationList.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView appIcon;
         TextView appName, appUsagesTime, lastTimeUsages;
         CardView view;
-        ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             appIcon = itemView.findViewById(R.id.app_icon);
             appName = itemView.findViewById(R.id.app_name);
@@ -101,9 +87,7 @@ public class AppAdapter extends RecyclerView.Adapter<AppAdapter.ViewHolder> {
         }
     }
 
-    private void showDialog(final String packageName, final Context context, UsageStats usageStats, final int position) {
-
-        final DBcreation dBcreation = new DBcreation(context);
+    private void showDialog(final String packageName, final Context context, final int position) {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(context);
         View dialogView =LayoutInflater.from(context).inflate(R.layout.app_info_dialoge, null);
 
@@ -111,25 +95,14 @@ public class AppAdapter extends RecyclerView.Adapter<AppAdapter.ViewHolder> {
         Button acceptBTN = dialogView.findViewById(R.id.button_save);
         TextView appNameD = dialogView.findViewById(R.id.app_name_dialog);
         ImageView appIcon = dialogView.findViewById(R.id.app_icon_dialog);
-        appIcon.setBackground(AppInfo.getAppIconByPackageName(packageName,context));
+
+        appIcon.setImageBitmap(AppInfo.getImage(appInformationList.get(position).getAppIcon()));
         CircularProgressIndicator circularProgressIndicator = dialogView.findViewById(R.id.circular_progress);
         final EditText hourEt = dialogView.findViewById(R.id.hour);
         final EditText minuteEt = dialogView.findViewById(R.id.minute);
 
-        if (AppInfo.PreferencesHelper.isParentalControlOn(context) && AppInfo.PreferencesHelper.isChild(context)){
-            hourEt.clearFocus();
-            hourEt.setFocusable(false);
-            hourEt.setEnabled(false);
-            minuteEt.clearFocus();
-            minuteEt.setFocusable(false);
-            minuteEt.setEnabled(false);
-            cancelBTN.setVisibility(View.INVISIBLE);
-            acceptBTN.setVisibility(View.INVISIBLE);
-        }
-
         appNameD.setText(AppInfo.GetAppName(packageName,context));
-        DatabaseModel databaseModel = dBcreation.getDataByPackage(packageName);
-        long time = databaseModel.getTime();
+        long time = appInformationList.get(position).getFixedTime();
         int minute = (int) time/(1000*60);
         int hours = (minute/60);
         minute = (minute%60);
@@ -137,8 +110,8 @@ public class AppAdapter extends RecyclerView.Adapter<AppAdapter.ViewHolder> {
         hourEt.setText(String.valueOf(hours));
         minuteEt.setHint("mm");
         minuteEt.setText(String.valueOf(minute));
-        long timeUsed = usageStats.getTotalTimeInForeground()/60000;
-        long timeFixed = dBcreation.getDataByPackage(packageName).getTime()/60000;
+        double timeUsed = appInformationList.get(position).getUsagesTime();
+        long timeFixed = appInformationList.get(position).getFixedTime();
         circularProgressIndicator.setProgress(timeUsed, timeFixed);
 
         if (timeFixed>timeUsed){
@@ -175,14 +148,30 @@ public class AppAdapter extends RecyclerView.Adapter<AppAdapter.ViewHolder> {
                     minuteEt.setError("Please enter the value!");
                 }else {
                     long d = (Long.parseLong(h)*3600*1000)+(Long.parseLong(m)*60*1000);
-                    boolean b = dBcreation.UpdateAppBasicInfo(new DatabaseModel(packageName, d));
-                    if (b){
-                        Toast.makeText(context, "Updated!", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
+                    appInformationList.get(position).setFixedTime(d);
+                    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                    String UID = null;
+                    if (mAuth!=null){
+                        UID = mAuth.getCurrentUser().getUid();
                     }
-                }
 
-                notifyItemChanged(position);
+                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child(context.getString(R.string.user)).child(UID).
+                            child("child").
+                            child(deviceToken).
+                            child("Data");
+                    databaseReference.setValue(appInformationList).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()){
+                                Log.v("UploadData", "Success: "+task.isSuccessful());
+                                notifyDataSetChanged();
+                                dialog.dismiss();
+                            }else {
+                                Log.v("UploadData", "Failed: "+task.getException().getMessage());
+                            }
+                        }
+                    });
+                }
             }
         });
 

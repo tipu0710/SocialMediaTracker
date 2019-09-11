@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,96 +7,104 @@
     android:background="@drawable/back"
     tools:context=".Activities.SignupActivity">
 
-    <TextView
-        android:textColor="@color/white"
-        android:text="SIGNUP"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/app_icon_"/>
-    <EditText
-        android:id="@+id/sign_up_name"
-        android:layout_width="278dp"
-        android:layout_height="50dp"
-        android:textAlignment="center"
-        android:layout_marginTop="50dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="8dp"
-        android:hint="username"
-        android:drawableLeft="@drawable/user_outline"
-        android:background="@drawable/sign_up_edittext"
-        android:textColor="@color/white"
-        android:textColorHint="@color/hint_color"
-        android:layout_below="@id/app_icon_"/>
-
-
-    <EditText
-        android:id="@+id/sign_up_email"
-        android:layout_width="278dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
-        android:textAlignment="center"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/sign_up_edittext"
-        android:layout_below="@id/sign_up_name"
-        android:textColor="@color/white"
-        android:drawableLeft="@drawable/mail_outline"
-        android:inputType="textEmailAddress"
-        android:hint="someone@email.com"
-        android:textColorHint="@color/hint_color"/>
-
-
-    <EditText
-        android:id="@+id/sign_up_password"
-        android:layout_width="278dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
-        android:textAlignment="center"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/sign_up_edittext"
-        android:layout_below="@id/sign_up_email"
-        android:hint="Password"
-        android:drawableLeft="@drawable/password_outline"
-        android:inputType="textPassword"
-        android:textColor="@color/white"
-        android:textColorHint="@color/hint_color" />
-
-    <ImageButton
-        android:id="@+id/sign_up_btn"
-        android:layout_width="160dp"
-        android:layout_below="@id/sign_up_password"
-        android:layout_height="65dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/save_back"
-        android:text="SIGNUP"
-        android:layout_centerHorizontal="true"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"/>
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        android:id="@+id/trans_sign"
-        android:background="@android:drawable/screen_background_dark_transparent" />
+        android:layout_height="wrap_content">
+        <TextView
+            android:textColor="@color/white"
+            android:text="SIGNUP"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/app_icon_"/>
+        <EditText
+            android:id="@+id/sign_up_name"
+            android:layout_width="278dp"
+            android:layout_height="50dp"
+            android:textAlignment="center"
+            android:layout_marginTop="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp"
+            android:hint="username"
+            android:drawableLeft="@drawable/user_outline"
+            android:background="@drawable/sign_up_edittext"
+            android:textColor="@color/white"
+            android:textColorHint="@color/hint_color"
+            android:layout_below="@id/app_icon_"/>
 
-    <com.github.ybq.android.spinkit.SpinKitView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/progress_bar_sign"
-        style="@style/SpinKitView.Circle"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_gravity="center"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        app:SpinKit_Color="#00E7C4"
-        android:visibility="gone"/>
 
-</RelativeLayout>
+        <EditText
+            android:id="@+id/sign_up_email"
+            android:layout_width="278dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="center"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/sign_up_edittext"
+            android:layout_below="@id/sign_up_name"
+            android:textColor="@color/white"
+            android:drawableLeft="@drawable/mail_outline"
+            android:inputType="textEmailAddress"
+            android:hint="someone@email.com"
+            android:textColorHint="@color/hint_color"/>
+
+
+        <EditText
+            android:id="@+id/sign_up_password"
+            android:layout_width="278dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="center"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/sign_up_edittext"
+            android:layout_below="@id/sign_up_email"
+            android:hint="Password"
+            android:drawableLeft="@drawable/password_outline"
+            android:inputType="textPassword"
+            android:textColor="@color/white"
+            android:textColorHint="@color/hint_color" />
+
+
+        <ImageButton
+            android:id="@+id/sign_up_btn"
+            android:layout_width="160dp"
+            android:layout_below="@id/sign_up_password"
+            android:layout_height="65dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/save_back"
+            android:text="SIGNUP"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:id="@+id/trans_sign"
+            android:background="@android:drawable/screen_background_dark_transparent" />
+
+        <com.github.ybq.android.spinkit.SpinKitView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/progress_bar_sign"
+            style="@style/SpinKitView.Circle"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            app:SpinKit_Color="#00E7C4"
+            android:visibility="gone"/>
+
+
+    </RelativeLayout>
+
+</ScrollView>
