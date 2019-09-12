@@ -1,17 +1,27 @@
 package com.example.socialmediatracker.background;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.usage.UsageStats;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.example.socialmediatracker.Activities.Alert;
+import com.example.socialmediatracker.Activities.AppUsagesActivity;
+import com.example.socialmediatracker.Activities.MainActivity;
 import com.example.socialmediatracker.DBoperation.DBcreation;
 import com.example.socialmediatracker.DBoperation.DatabaseModel;
 import com.example.socialmediatracker.R;
@@ -31,15 +41,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.socialmediatracker.Activities.SignupActivity.CHILD;
-import static com.example.socialmediatracker.Activities.SignupActivity.PARENT;
 
 public class AlarmReceiver extends BroadcastReceiver {
     String deviceToken;
+    Context context;
+    private String CHANNEL_ID;
+    public static final String ADD_TEN_MINUTES = "add_ten_minutes";
+    public static final String GOTO_DETAILS = "goto_details";
     @Override
     public void onReceive(Context context, Intent intent) {
+        this.context = context;
         Log.v("ExtraTime","start receiver");
-        Intent x = new Intent(context, Alert.class);
-        x.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         DBcreation dBcreation = new DBcreation(context);
 
         deviceToken = Settings.Secure.getString(context.getContentResolver(),
@@ -79,11 +91,21 @@ public class AlarmReceiver extends BroadcastReceiver {
                     DatabaseModel databaseModel = dBcreation.getDataByPackage(foregroundPackageName);
                     long saveTime = databaseModel.getTime();
                     if (foregroundPackageName.equals(usageStats.getPackageName())){
-                        if (saveTime<= usageStats.getTotalTimeInForeground() && usageStats.getTotalTimeInForeground()>6*60*1000 && !foregroundPackageName.equals(context.getPackageName())){
-                            x.putExtra("appName", AppInfo.GetAppName(foregroundPackageName,context));
-                            x.putExtra("packageName", foregroundPackageName);
-                            x.putExtra("usedTime", usageStats.getTotalTimeInForeground());
-                            context.startActivity(x);
+                        if (saveTime<= usageStats.getTotalTimeInForeground() &&
+                                usageStats.getTotalTimeInForeground()>6*60*1000 &&
+                                !foregroundPackageName.equals(context.getPackageName())){
+                            String appName = AppInfo.GetAppName(foregroundPackageName,context);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                                String msg = "You are spending too much time on "+appName;
+                                createNotification(msg);
+                            }else {
+                                Intent x = new Intent(context, Alert.class);
+                                x.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                x.putExtra("appName", appName);
+                                x.putExtra("packageName", foregroundPackageName);
+                                x.putExtra("usedTime", usageStats.getTotalTimeInForeground());
+                                context.startActivity(x);
+                            }
                         }
                     }
                 }
@@ -175,4 +197,68 @@ public class AlarmReceiver extends BroadcastReceiver {
             }
         });
     }
+
+
+    private void createNotificationChannel() {
+        CharSequence channelName = CHANNEL_ID;
+        String channelDesc = "channelDesc";
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, channelName, importance);
+            channel.setDescription(channelDesc);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            assert notificationManager != null;
+            NotificationChannel currChannel = notificationManager.getNotificationChannel(CHANNEL_ID);
+            if (currChannel == null)
+                notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+
+    public void createNotification(String message) {
+
+        CHANNEL_ID = context.getString(R.string.app_name);
+        if (message != null ) {
+            createNotificationChannel();
+
+            Intent intentGo = new Intent(context, MainActivity.class);
+            intentGo.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+            PendingIntent pendingIntentGo = PendingIntent.getActivity(context, 556699, intentGo, 0);
+
+            Intent intentUse = new Intent(context, AppUsagesActivity.class);
+            intentGo.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+            PendingIntent pendingIntentUse = PendingIntent.getActivity(context, 556699, intentUse, PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+
+            Intent intent = new Intent(context, ActionReceiver.class);
+            intent.setAction(ADD_TEN_MINUTES);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 556699, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentTitle("Warning!")
+                    .setContentText(message)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setContentIntent(pendingIntentGo)
+                    .setVibrate(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400})
+                    .setAutoCancel(true)
+                    .addAction(R.mipmap.ic_launcher, "+10 MINUTES", pendingIntent)
+                    .addAction(R.mipmap.ic_launcher, "DETAILS", pendingIntentUse)
+                    .setOngoing(true);
+            Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+            mBuilder.setSound(uri);
+
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+            int notificationId = 6654;
+
+            notificationManager.notify(notificationId, mBuilder.build());
+        }
+    }
+
 }

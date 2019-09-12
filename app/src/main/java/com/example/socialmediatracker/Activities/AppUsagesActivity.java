@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -82,5 +83,12 @@ public class AppUsagesActivity extends AppCompatActivity {
         public final int compare(UsageStats a, UsageStats b) {
             return (int)(b.getTotalTimeInForeground() - a.getTotalTimeInForeground());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 }
