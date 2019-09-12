@@ -10,13 +10,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import com.example.socialmediatracker.Adapter.AppAdapter;
 import com.example.socialmediatracker.Adapter.MonitorAdapter;
 import com.example.socialmediatracker.R;
 import com.example.socialmediatracker.helper.AppInformation;
-import com.example.socialmediatracker.helper.Data;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.DoubleBounce;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,12 +22,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static com.example.socialmediatracker.Activities.SignupActivity.CHILD;
 
@@ -43,6 +39,7 @@ public class MonitorActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
     private String deviceToken, UID;
+    private TextView warningTv;
     ProgressBar progressBar;
     Sprite doubleBounce;
 
@@ -53,6 +50,7 @@ public class MonitorActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.child_data);
         progressBar = findViewById(R.id.progress_monitor);
+        warningTv = findViewById(R.id.monitor_warning_tv);
         doubleBounce = new DoubleBounce();
         progressBar.setVisibility(View.VISIBLE);
 
@@ -74,7 +72,13 @@ public class MonitorActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 deviceToken = dataSnapshot.getValue().toString();
                 Log.v("DataUpload", deviceToken);
-                getData();
+                if (!deviceToken.isEmpty()) {
+                    getData();
+                }else {
+                    warningTv.setVisibility(View.VISIBLE);
+                    warningTv.setText("Child is not connected");
+                    progressBar.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -98,7 +102,13 @@ public class MonitorActivity extends AppCompatActivity {
                     long fixedTime = (long) snapshot.child("fixedTime").getValue();
                     appInformationList.add(new AppInformation(appName, packageName, appIcon, usagesTime, fixedTime));
                 }
-                createList();
+                if (appInformationList.size()>0){
+                    createList();
+                }else {
+                    warningTv.setVisibility(View.VISIBLE);
+                    warningTv.setText("Nothing to show!");
+                    progressBar.setVisibility(View.GONE);
+                }
             }
 
             @Override

@@ -21,4 +21,14 @@
         android:layout_centerVertical="true"
         app:SpinKit_Color="#4CAF50"
         android:visibility="gone"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/monitor_warning_tv"
+        android:text="Child is not connected"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"/>
 </RelativeLayout>
